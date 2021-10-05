@@ -1,0 +1,20 @@
+# see: https://docs.docker.com/engine/install/debian/
+
+DOCKER_PREREQUISITS:
+  - 'apt-transport-https'
+  - 'ca-certificates'
+  - 'gnupg'
+  - 'curl'
+
+DOCKER_REPO_KEY_URL: 'https://download.docker.com/linux/debian/gpg'
+DOCKER_REPO_KEY: '/usr/share/keyrings/docker-archive-keyring.gpg'
+DOCKER_REPO: "deb [arch=amd64 signed-by={{ DOCKER_REPO_KEY }}] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
+
+DOCKER_PKGS:
+  - 'docker-ce'
+  - 'docker-ce-cli'
+  - 'containerd.io'
+
+DOCKER_COMPOSE: false
+DOCKER_COMPOSE_VERSION: 1.29.2
+DOCKER_COMPOSE_URL: "https://github.com/docker/compose/releases/download/{{ DOCKER_COMPOSE_VERSION }}/docker-compose-Linux-x86_64"
