@@ -1,7 +1,11 @@
 ---
 
 galaxy_info:
-  author: 'AnsibleGuy'
+  authors: ['AnsibleGuy <guy@ansibleguy.net>']
+  readme: 'ReadMe.md'
+  license: ['MIT']
+  version: '1.0'
+  repository: 'https://github.com/ansibleguy/docker_setup'
   description: 'Role to deploy a minimal docker setup on a linux server'
   platforms:
     - name: Debian
