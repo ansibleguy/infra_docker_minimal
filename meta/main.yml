@@ -4,8 +4,8 @@ galaxy_info:
   author: 'AnsibleGuy <guy@ansibleguy.net>'
   readme: 'README.md'
   license: 'MIT'
-  repository: 'https://github.com/ansibleguy/docker_setup'
-  issue_tracker_url: 'https://github.com/ansibleguy/docker_setup/issues'
+  repository: 'https://github.com/ansibleguy/infra_docker_minimal'
+  issue_tracker_url: 'https://github.com/ansibleguy/infra_docker_minimal/issues'
   github_branch: 'stable'
   min_ansible_version: 2.9.0
   description: 'Role to deploy a minimal docker setup on a linux server'
