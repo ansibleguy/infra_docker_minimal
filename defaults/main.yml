@@ -1,20 +1,26 @@
 # see: https://docs.docker.com/engine/install/debian/
 
-DOCKER_PREREQUISITS:
-  - 'apt-transport-https'
-  - 'ca-certificates'
-  - 'gnupg'
-  - 'curl'
+default_docker:
+  compose: false
+  compose_version: 1.29.2
 
-DOCKER_REPO_KEY_URL: 'https://download.docker.com/linux/debian/gpg'
-DOCKER_REPO_KEY: '/usr/share/keyrings/docker-archive-keyring.gpg'
-DOCKER_REPO: "deb [arch=amd64 signed-by={{ DOCKER_REPO_KEY }}] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
 
-DOCKER_PKGS:
-  - 'docker-ce'
-  - 'docker-ce-cli'
-  - 'containerd.io'
+CONFIG: "{{ default_docker | combine(docker, recursive=true) }}"
 
-DOCKER_COMPOSE: false
-DOCKER_COMPOSE_VERSION: 1.29.2
-DOCKER_COMPOSE_URL: "https://github.com/docker/compose/releases/download/{{ DOCKER_COMPOSE_VERSION }}/docker-compose-Linux-x86_64"
+setup:
+  dependencies:
+    - 'apt-transport-https'
+    - 'ca-certificates'
+    - 'gnupg'
+    - 'curl'
+
+  repo_key_url: 'https://download.docker.com/linux/debian/gpg'
+  repo_key: '/usr/share/keyrings/docker-archive-keyring.gpg'
+  repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
+
+  packages:
+    - 'docker-ce'
+    - 'docker-ce-cli'
+    - 'containerd.io'
+
+  compose_url: "https://github.com/docker/compose/releases/download/{{ CONFIG.compose_version }}/docker-compose-Linux-x86_64"
