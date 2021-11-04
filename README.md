@@ -19,6 +19,8 @@ There is also an option to install docker-compose on the target host.
 
 ## Usage
 
+### Execution
+
 Run the playbook:
 ```bash
 ansible-playbook -K -D -i inventory/hosts.yml playbook.yml
