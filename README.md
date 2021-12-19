@@ -1,5 +1,5 @@
 # Docker Setup
-Ansible role to set-up basic docker on a linux host
+Ansible Role to deploy a basic docker installation on a linux server.
 
 
 **Tested:**
