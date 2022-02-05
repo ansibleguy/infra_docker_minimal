@@ -1,3 +1,4 @@
+---
 # see: https://docs.docker.com/engine/install/debian/
 
 default_docker:
@@ -16,7 +17,8 @@ setup:
 
   repo_key_url: 'https://download.docker.com/linux/debian/gpg'
   repo_key: '/usr/share/keyrings/docker-archive-keyring.gpg'
-  repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
+  repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg]
+  https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
 
   packages:
     - 'docker-ce'
