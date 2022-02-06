@@ -3,22 +3,25 @@
 
 default_docker:
   compose: false
-  compose_version: 1.29.2
-
+  compose_version: '1.29.2'
+  listen_tcp:
+    enable: false
+    port: 2375
+    bind: '0.0.0.0'
 
 CONFIG: "{{ default_docker | combine(docker, recursive=true) }}"
 
-setup:
+DOCKER_HC:
   dependencies:
     - 'apt-transport-https'
     - 'ca-certificates'
     - 'gnupg'
     - 'curl'
 
-  repo_key_url: 'https://download.docker.com/linux/debian/gpg'
+  repo_key_url: "https://download.docker.com/linux/{{ ansible_distribution|lower }}/gpg"
   repo_key: '/usr/share/keyrings/docker-archive-keyring.gpg'
   repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg]
-  https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
+  https://download.docker.com/linux/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable"
 
   packages:
     - 'docker-ce'
