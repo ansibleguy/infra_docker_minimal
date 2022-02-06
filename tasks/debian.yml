@@ -3,6 +3,7 @@
 - name: Docker-Minimal | Debian | Install Docker's dependencies
   ansible.builtin.apt:
     name: "{{ DOCKER_HC.dependencies }}"
+    state: present
 
 - name: Docker-Minimal | Debian | Adding gpg repo-key
   ansible.builtin.shell: "curl -fsSL {{ DOCKER_HC.repo_key_url }} |
@@ -18,6 +19,7 @@
 - name: Docker-Minimal | Debian | Installing docker
   ansible.builtin.apt:
     name: "{{ DOCKER_HC.packages }}"
+    state: present
 
 - name: Docker-Minimal | Debian | Configuring docker to listen on tcp (1/3)
   ansible.builtin.file:
