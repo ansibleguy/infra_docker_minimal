@@ -1,6 +1,8 @@
 ---
 # see: https://docs.docker.com/engine/install/debian/
 
+docker: {}
+
 default_docker:
   compose: false
   compose_version: '1.29.2'
