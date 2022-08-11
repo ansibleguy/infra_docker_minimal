@@ -3,7 +3,7 @@
 
 docker: {}
 
-default_docker:
+defaults_do:
   compose: false
   compose_version: '1.29.2'
   listen_tcp:
@@ -11,7 +11,7 @@ default_docker:
     port: 2375
     bind: '0.0.0.0'
 
-CONFIG: "{{ default_docker | combine(docker, recursive=true) }}"
+CONFIG: "{{ defaults_do | combine(docker, recursive=true) }}"
 
 DOCKER_HC:
   dependencies:
