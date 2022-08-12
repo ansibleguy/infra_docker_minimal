@@ -21,6 +21,9 @@ There is also an option to install docker-compose on the target host.
   * **Default opt-outs**:
     * docker-compose
 
+  * **Default opt-ins**:
+    * docker server component (_else only client will be installed_)
+
 ## Info
 
 * **Note:** this role currently only supports debian-based systems

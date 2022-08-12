@@ -3,7 +3,8 @@
 
 docker: {}
 
-defaults_do:
+defaults_docker:
+  server: true
   compose: false
   compose_version: '1.29.2'
   listen_tcp:
@@ -11,7 +12,7 @@ defaults_do:
     port: 2375
     bind: '0.0.0.0'
 
-CONFIG: "{{ defaults_do | combine(docker, recursive=true) }}"
+CONFIG_DOCKER: "{{ defaults_docker | combine(docker, recursive=true) }}"
 
 DOCKER_HC:
   dependencies:
@@ -27,8 +28,10 @@ DOCKER_HC:
   https://download.docker.com/linux/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable"
 
   packages:
+    server:
     - 'docker-ce'
-    - 'docker-ce-cli'
     - 'containerd.io'
+    client:
+      - 'docker-ce-cli'
 
-  compose_url: "https://github.com/docker/compose/releases/download/{{ CONFIG.compose_version }}/docker-compose-Linux-x86_64"
+  compose_url: "https://github.com/docker/compose/releases/download/{{ CONFIG_DOCKER.compose_version }}/docker-compose-Linux-x86_64"
