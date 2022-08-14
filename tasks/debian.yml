@@ -5,11 +5,9 @@
     name: "{{ DOCKER_HC.dependencies }}"
     state: present
 
-- name: Docker-Minimal | Debian | Adding gpg repo-key
-  ansible.builtin.shell: "curl -fsSL {{ DOCKER_HC.repo_key_url }} |
-  gpg --dearmor -o {{ DOCKER_HC.repo_key }}"
-  args:
-    creates: "{{ DOCKER_HC.repo_key }}"
+- name: Docker-Minimal | Debian | Adding repo-key
+  ansible.builtin.apt_key:
+    url: "{{ DOCKER_HC.repo_key_url }}"
 
 - name: Docker-Minimal | Debian | Add docker repository
   ansible.builtin.apt_repository:

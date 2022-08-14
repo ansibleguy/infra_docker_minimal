@@ -6,7 +6,7 @@ docker: {}
 defaults_docker:
   server: true
   compose: false
-  compose_version: '1.29.2'
+  compose_version: '2.9'
   listen_tcp:
     enable: false
     port: 2375
