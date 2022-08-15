@@ -1,5 +1,19 @@
 ---
 
+- name: Docker-Minimal | Showing debug info - user provided config
+  ansible.builtin.debug:
+    var: docker
+  when:
+    - debug is defined
+    - debug
+
+- name: Docker-Minimal | Showing debug info - running config
+  ansible.builtin.debug:
+    var: CONFIG_DOCKER
+  when:
+    - debug is defined
+    - debug
+
 - name: Docker-Minimal | Processing debian config
   ansible.builtin.import_tasks: debian.yml
   when: "ansible_distribution|lower in ['debian', 'ubuntu']"

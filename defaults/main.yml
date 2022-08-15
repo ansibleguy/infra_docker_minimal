@@ -1,6 +1,10 @@
 ---
 # see: https://docs.docker.com/engine/install/debian/
 
+no_prompts: false
+debug: false
+testing: false
+
 docker: {}
 
 defaults_docker:
