@@ -5,14 +5,22 @@
     name: "{{ DOCKER_HC.dependencies }}"
     state: present
 
-- name: Docker-Minimal | Debian | Adding repo-key
-  ansible.builtin.apt_key:
-    url: "{{ DOCKER_HC.repo_key_url }}"
+- name: Docker-Minimal | Debian | Download repo public-key
+  ansible.builtin.get_url:
+    url: "{{ DOCKER_HC.repo.pub_url }}"
+    dest: "{{ DOCKER_HC.repo.pub_file }}_armored"
+    checksum: "{{ DOCKER_HC.repo.pub_hash }}"
+  register: dok_pub_dl
+
+- name: Docker-Minimal | Debian | Adding repo public-key
+  ansible.builtin.shell:  "gpg --dearmor <  {{ DOCKER_HC.repo.pub_file }}_armored > {{ DOCKER_HC.repo.pub_file }}"
+  no_log: true
+  when: dok_pub_dl.changed
 
 - name: Docker-Minimal | Debian | Add docker repository
   ansible.builtin.apt_repository:
-    repo: "{{ DOCKER_HC.repo }}"
-    filename: 'docker.list'
+    repo: "{{ DOCKER_HC.repo.source }}"
+    filename: 'docker'
 
 - name: Docker-Minimal | Debian | Installing docker client
   ansible.builtin.apt:
