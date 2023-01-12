@@ -7,6 +7,15 @@ Ansible Role to deploy a basic docker installation on a linux server.
 **Tested:**
 * Debian 11
 
+## Install
+
+```bash
+ansible-galaxy install ansibleguy.infra_docker_minimal
+
+# or to custom role-path
+ansible-galaxy install ansibleguy.infra_docker_minimal --roles-path ./roles
+```
+
 ## Functionality
 
 To keep it short => it will set-up docker like described [here](https://docs.docker.com/engine/install/debian/).
