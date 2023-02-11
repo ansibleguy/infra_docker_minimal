@@ -9,7 +9,7 @@
 
 - name: Docker-Minimal | Showing debug info - running config
   ansible.builtin.debug:
-    var: CONFIG_DOCKER
+    var: DOCKER
   when:
     - debug is defined
     - debug

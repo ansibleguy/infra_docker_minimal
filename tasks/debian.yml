@@ -7,19 +7,20 @@
 
 - name: Docker-Minimal | Debian | Download repo public-key
   ansible.builtin.get_url:
-    url: "{{ DOCKER_HC.repo.pub_url }}"
-    dest: "{{ DOCKER_HC.repo.pub_file }}_armored"
-    checksum: "{{ DOCKER_HC.repo.pub_hash }}"
-  register: dok_pub_dl
+    url: "{{ DOCKER_HC.repo.gpg.url }}"
+    dest: "{{ DOCKER_HC.repo.gpg.file }}_armored"
+    checksum: "{{ DOCKER_HC.repo.gpg.hash }}"
+  register: dok_gpg_dl
 
 - name: Docker-Minimal | Debian | Adding repo public-key
-  ansible.builtin.shell:  "gpg --dearmor <  {{ DOCKER_HC.repo.pub_file }}_armored > {{ DOCKER_HC.repo.pub_file }}"
+  ansible.builtin.shell: "gpg --dearmor <  {{ DOCKER_HC.repo.gpg.file }}_armored > {{ DOCKER_HC.repo.gpg.file }}"
   no_log: true
-  when: dok_pub_dl.changed
+  when: dok_gpg_dl.changed
 
 - name: Docker-Minimal | Debian | Add docker repository
   ansible.builtin.apt_repository:
-    repo: "{{ DOCKER_HC.repo.source }}"
+    repo: "deb [arch={{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }} signed-by={{ DOCKER_HC.repo.gpg.file }}]
+    https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} {{ DOCKER_HC.repo.tag }}"
     filename: 'docker'
 
 - name: Docker-Minimal | Debian | Installing docker client
@@ -32,18 +33,22 @@
   ansible.builtin.apt:
     name: "{{ DOCKER_HC.packages.server }}"
     state: present
-  when: CONFIG_DOCKER.server
+  when: DOCKER.server
 
-- name: Docker-Minimal | Debian | Configuring docker to listen on tcp (1/3)
+- name: Docker-Minimal | Debian | Removing daemon.json
+  ansible.builtin.file:
+    path: '/etc/docker/daemon.json'
+    state: absent
+
+- name: Docker-Minimal | Debian | Configuring docker service (1/2)
   ansible.builtin.file:
     path: '/etc/systemd/system/docker.service.d'
     state: directory
     owner: 'root'
     group: 'root'
     mode: 0755
-  when: CONFIG_DOCKER.listen_tcp.enable
 
-- name: Docker-Minimal | Debian | Configuring docker to listen on tcp (2/3)
+- name: Docker-Minimal | Debian | Configuring docker service (2/2)
   ansible.builtin.copy:
     content: |
       # ansible_managed
@@ -51,47 +56,40 @@
 
       [Service]
       ExecStart=
-      ExecStart=/usr/bin/dockerd
+      ExecStart={{ DOCKER_SVC_CMD }}
+      {% if DOCKER.nftables.clean or DOCKER.nftables.reload %}
+      ExecStartPost=/usr/bin/systemctl reload nftables.service
+      {% endif %}
 
     dest: '/etc/systemd/system/docker.service.d/override.conf'
     owner: 'root'
     group: 'root'
     mode: 0755
-  when: CONFIG_DOCKER.listen_tcp.enable
-
-- name: Docker-Minimal | Debian | Configuring docker to listen on tcp (3/3)
-  ansible.builtin.template:
-    src: 'templates/etc/docker/daemon.json.j2'
-    dest: '/etc/docker/daemon.json'
-    owner: 'root'
-    group: 'root'
-    mode: 0755
-  when: CONFIG_DOCKER.listen_tcp.enable
 
 - name: Docker-Minimal | Debian | Restarting docker
   ansible.builtin.systemd:
     name: 'docker.service'
     state: restarted
     daemon_reload: yes
-  when: CONFIG_DOCKER.listen_tcp.enable
+  when: DOCKER.tcp.enable
 
 - name: Docker-Minimal | Debian | Downloading docker-compose
   ansible.builtin.get_url:
     url: "{{ DOCKER_HC.compose_url }}"
     dest: '/usr/local/bin/docker-compose'
     mode: 0755
-  when: CONFIG_DOCKER.compose
+  when: DOCKER.compose.enable
 
 - name: Docker-Minimal | Debian | Linking docker-compose
   ansible.builtin.file:
     path: '/usr/bin/docker-compose'
     src: '/usr/local/bin/docker-compose'
     state: link
-  when: CONFIG_DOCKER.compose
+  when: DOCKER.compose.enable
 
 - name: Docker-Minimal | Debian | Enabling/Starting docker service
   ansible.builtin.systemd:
     name: 'docker.service'
     state: started
     enabled: yes
-  when: CONFIG_DOCKER.server
+  when: DOCKER.server

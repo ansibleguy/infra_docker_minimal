@@ -13,3 +13,4 @@ galaxy_info:
         - bullseye
   galaxy_tags:
     - 'docker'
+    - 'nftables'

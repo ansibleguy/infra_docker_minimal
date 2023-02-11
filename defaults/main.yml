@@ -8,16 +8,24 @@ docker: {}
 
 defaults_docker:
   server: true
-  compose: false
-  compose_version: '2.9'
-  listen_tcp:
+  compose:
+    enable: false
+    version: '2.15.1'
+  socket: '/var/run/docker.sock'
+  tcp:
     enable: false
     port: 2375
     bind: '0.0.0.0'
+  nftables:
+    clean: false  # set bridge_none, disable_iptables and reload to true
+    bridge_none: false  # set bridge=none argument on docker-startup
+    disable_iptables: false  # set iptables=false argument on docker-startup
+    reload: false  # reload nftables after a docker.service restart to remove its auto-added iptables-rules
 
-CONFIG_DOCKER: "{{ defaults_docker | combine(docker, recursive=true) }}"
 
-compose_version_fixed: "{% if CONFIG_DOCKER.compose_version[0] not in ['1', 'v'] %}v{{ CONFIG_DOCKER.compose_version }}{% endif %}"
+DOCKER: "{{ defaults_docker | combine(docker, recursive=true) }}"
+
+compose_version_fixed: "{% if DOCKER.compose.version[0] not in ['1', 'v'] %}v{{ DOCKER.compose.version }}{% endif %}"
 
 DOCKER_HC:
   dependencies:
@@ -28,17 +36,23 @@ DOCKER_HC:
     - 'systemd'
 
   repo:
-    pub_url: "https://download.docker.com/linux/{{ ansible_distribution|lower }}/gpg"
-    pub_hash: 'sha256:1500c1f56fa9e26b9b8f42452a553675796ade0807cdce11975eb98170b3a570'
-    pub_file: '/usr/share/keyrings/docker-archive-keyring.gpg'
-    source: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg]
-    https://download.docker.com/linux/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable"
+    gpg:
+      url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+      hash: 'sha256:1500c1f56fa9e26b9b8f42452a553675796ade0807cdce11975eb98170b3a570'
+      file: '/usr/share/keyrings/docker-archive-keyring.gpg'
+    tag: 'stable'
 
   packages:
     server:
-    - 'docker-ce'
-    - 'containerd.io'
+      - 'docker-ce'
+      - 'containerd.io'
     client:
       - 'docker-ce-cli'
 
-  compose_url: "https://github.com/docker/compose/releases/download/{{ compose_version_fixed }}/docker-compose-Linux-x86_64"
+  compose_url: "https://github.com/docker/compose/releases/download/{{ compose_version_fixed }}/docker-compose-Linux-{{ ansible_architecture }}"
+
+DOCKER_SVC_CMD: "/usr/bin/dockerd\
+{% if DOCKER.nftables.clean or DOCKER.nftables.bridge_none %} --bridge=none{% endif %}\
+{% if DOCKER.nftables.clean or DOCKER.nftables.disable_iptables %} --iptables=false{% endif %}\
+{% if DOCKER.tcp.enable %} -H tcp://{{ DOCKER.tcp.bind }}:{{ DOCKER.tcp.port }} --cgroup-parent 'docker.slice'{% endif %}
+-H unix:/{{ DOCKER.socket }}"
