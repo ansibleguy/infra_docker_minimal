@@ -10,6 +10,7 @@
     url: "{{ DOCKER_HC.repo.gpg.url }}"
     dest: "{{ DOCKER_HC.repo.gpg.file }}_armored"
     checksum: "{{ DOCKER_HC.repo.gpg.hash }}"
+    mode: 0644
   register: dok_gpg_dl
 
 - name: Docker-Minimal | Debian | Adding repo public-key
@@ -29,49 +30,9 @@
     state: present
     update_cache: true
 
-- name: Docker-Minimal | Debian | Installing docker server
-  ansible.builtin.apt:
-    name: "{{ DOCKER_HC.packages.server }}"
-    state: present
+- name: Docker-Minimal | Debian | Server component
+  ansible.builtin.import_tasks: server.yml
   when: DOCKER.server
-
-- name: Docker-Minimal | Debian | Removing daemon.json
-  ansible.builtin.file:
-    path: '/etc/docker/daemon.json'
-    state: absent
-
-- name: Docker-Minimal | Debian | Configuring docker service (1/2)
-  ansible.builtin.file:
-    path: '/etc/systemd/system/docker.service.d'
-    state: directory
-    owner: 'root'
-    group: 'root'
-    mode: 0755
-
-- name: Docker-Minimal | Debian | Configuring docker service (2/2)
-  ansible.builtin.copy:
-    content: |
-      # ansible_managed
-      # ansibleguy.infra_docker_minimal
-
-      [Service]
-      ExecStart=
-      ExecStart={{ DOCKER_SVC_CMD }}
-      {% if DOCKER.nftables.clean or DOCKER.nftables.reload %}
-      ExecStartPost=/usr/bin/systemctl reload nftables.service
-      {% endif %}
-
-    dest: '/etc/systemd/system/docker.service.d/override.conf'
-    owner: 'root'
-    group: 'root'
-    mode: 0755
-
-- name: Docker-Minimal | Debian | Restarting docker
-  ansible.builtin.systemd:
-    name: 'docker.service'
-    state: restarted
-    daemon_reload: yes
-  when: DOCKER.tcp.enable
 
 - name: Docker-Minimal | Debian | Downloading docker-compose
   ansible.builtin.get_url:
@@ -86,10 +47,3 @@
     src: '/usr/local/bin/docker-compose'
     state: link
   when: DOCKER.compose.enable
-
-- name: Docker-Minimal | Debian | Enabling/Starting docker service
-  ansible.builtin.systemd:
-    name: 'docker.service'
-    state: started
-    enabled: yes
-  when: DOCKER.server

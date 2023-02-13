@@ -1,0 +1,50 @@
+---
+
+- name: Docker-Minimal | Debian | Server | Installing docker server
+  ansible.builtin.apt:
+    name: "{{ DOCKER_HC.packages.server }}"
+    state: present
+
+- name: Docker-Minimal | Debian | Server | Removing daemon.json
+  ansible.builtin.file:
+    path: '/etc/docker/daemon.json'
+    state: absent
+
+- name: Docker-Minimal | Debian | Server | Configuring docker service (1/2)
+  ansible.builtin.file:
+    path: '/etc/systemd/system/docker.service.d'
+    state: directory
+    owner: 'root'
+    group: 'root'
+    mode: 0755
+
+- name: Docker-Minimal | Debian | Server | Configuring docker service (2/2)
+  ansible.builtin.copy:
+    content: |
+      # ansible_managed
+      # ansibleguy.infra_docker_minimal
+
+      [Service]
+      ExecStart=
+      ExecStart={{ DOCKER_SVC_CMD }}
+      {% if DOCKER.nftables.clean or DOCKER.nftables.reload %}
+      ExecStartPost=/usr/bin/systemctl reload nftables.service
+      {% endif %}
+
+    dest: '/etc/systemd/system/docker.service.d/override.conf'
+    owner: 'root'
+    group: 'root'
+    mode: 0755
+
+- name: Docker-Minimal | Debian | Server | Restarting docker
+  ansible.builtin.systemd:
+    name: 'docker.service'
+    state: restarted
+    daemon_reload: yes
+  when: DOCKER.tcp.enable
+
+- name: Docker-Minimal | Debian | Server | Enabling/Starting docker service
+  ansible.builtin.systemd:
+    name: 'docker.service'
+    state: started
+    enabled: yes

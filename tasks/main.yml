@@ -16,4 +16,4 @@
 
 - name: Docker-Minimal | Processing debian config
   ansible.builtin.import_tasks: debian.yml
-  when: "ansible_distribution|lower in ['debian', 'ubuntu']"
+  when: "ansible_distribution | lower in ['debian', 'ubuntu']"
