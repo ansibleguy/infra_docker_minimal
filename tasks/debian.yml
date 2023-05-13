@@ -1,11 +1,11 @@
 ---
 
-- name: Docker-Minimal | Debian | Install Docker's dependencies
+- name: Docker-Minimal| | Install Docker's dependencies
   ansible.builtin.apt:
     name: "{{ DOCKER_HC.dependencies }}"
     state: present
 
-- name: Docker-Minimal | Debian | Download repo public-key
+- name: Docker-Minimal| | Download repo public-key
   ansible.builtin.get_url:
     url: "{{ DOCKER_HC.repo.gpg.url }}"
     dest: "{{ DOCKER_HC.repo.gpg.file }}_armored"
@@ -13,35 +13,35 @@
     mode: 0644
   register: dok_gpg_dl
 
-- name: Docker-Minimal | Debian | Adding repo public-key
+- name: Docker-Minimal| | Adding repo public-key
   ansible.builtin.shell: "gpg --dearmor <  {{ DOCKER_HC.repo.gpg.file }}_armored > {{ DOCKER_HC.repo.gpg.file }}"
   no_log: true
   when: dok_gpg_dl.changed
 
-- name: Docker-Minimal | Debian | Add docker repository
+- name: Docker-Minimal| | Add docker repository
   ansible.builtin.apt_repository:
     repo: "deb [arch={{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }} signed-by={{ DOCKER_HC.repo.gpg.file }}]
     https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} {{ DOCKER_HC.repo.tag }}"
     filename: 'docker'
 
-- name: Docker-Minimal | Debian | Installing docker client
+- name: Docker-Minimal| | Installing docker client
   ansible.builtin.apt:
     name: "{{ DOCKER_HC.packages.client }}"
     state: present
     update_cache: true
 
-- name: Docker-Minimal | Debian | Server component
+- name: Docker-Minimal| | Server component
   ansible.builtin.import_tasks: server.yml
   when: DOCKER.server
 
-- name: Docker-Minimal | Debian | Downloading docker-compose
+- name: Docker-Minimal| | Downloading docker-compose
   ansible.builtin.get_url:
     url: "{{ DOCKER_HC.compose_url }}"
     dest: '/usr/local/bin/docker-compose'
     mode: 0755
   when: DOCKER.compose.enable
 
-- name: Docker-Minimal | Debian | Linking docker-compose
+- name: Docker-Minimal| | Linking docker-compose
   ansible.builtin.file:
     path: '/usr/bin/docker-compose'
     src: '/usr/local/bin/docker-compose'
