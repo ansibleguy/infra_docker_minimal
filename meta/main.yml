@@ -5,7 +5,7 @@ galaxy_info:
   namespace: 'ansibleguy'
   license: 'GPLv3'
   issue_tracker_url: 'https://github.com/ansibleguy/infra_docker_minimal/issues'
-  min_ansible_version: 2.9.0
+  min_ansible_version: 2.14
   description: 'Role to deploy a minimal docker setup on a linux server'
   platforms:
     - name: Debian
