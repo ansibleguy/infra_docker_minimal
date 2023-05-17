@@ -1,16 +1,16 @@
 ---
 
-- name: Docker-Minimal| | Server | Installing docker server
+- name: Docker-Minimal | Server | Installing docker server
   ansible.builtin.apt:
     name: "{{ DOCKER_HC.packages.server }}"
     state: present
 
-- name: Docker-Minimal| | Server | Removing daemon.json
+- name: Docker-Minimal | Server | Removing daemon.json
   ansible.builtin.file:
     path: '/etc/docker/daemon.json'
     state: absent
 
-- name: Docker-Minimal| | Server | Configuring docker service (1/2)
+- name: Docker-Minimal | Server | Configuring docker service (1/2)
   ansible.builtin.file:
     path: '/etc/systemd/system/docker.service.d'
     state: directory
@@ -18,7 +18,7 @@
     group: 'root'
     mode: 0755
 
-- name: Docker-Minimal| | Server | Configuring docker service (2/2)
+- name: Docker-Minimal | Server | Configuring docker service (2/2)
   ansible.builtin.copy:
     content: |
       # ansible_managed
@@ -36,14 +36,14 @@
     group: 'root'
     mode: 0755
 
-- name: Docker-Minimal| | Server | Restarting docker
+- name: Docker-Minimal | Server | Restarting docker
   ansible.builtin.systemd:
     name: 'docker.service'
     state: restarted
     daemon_reload: yes
-  when: DOCKER.tcp.enable
+  when: DOCKER.tcp.enable | bool
 
-- name: Docker-Minimal| | Server | Enabling/Starting docker service
+- name: Docker-Minimal | Server | Enabling/Starting docker service
   ansible.builtin.systemd:
     name: 'docker.service'
     state: started

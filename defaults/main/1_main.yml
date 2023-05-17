@@ -1,0 +1,23 @@
+---
+# see: https://docs.docker.com/engine/install/debian/
+
+no_prompts: false
+debug: false
+
+docker: {}
+
+defaults_docker:
+  server: true
+  compose:
+    enable: false
+    version: '2.18.0'
+  socket: '/var/run/docker.sock'
+  tcp:
+    enable: false
+    port: 2375
+    bind: '0.0.0.0'
+  nftables:
+    clean: false  # set bridge_none, disable_iptables and reload to true
+    bridge_none: false  # set bridge=none argument on docker-startup
+    disable_iptables: false  # set iptables=false argument on docker-startup
+    reload: false  # reload nftables after a docker.service restart to remove its auto-added iptables-rules
