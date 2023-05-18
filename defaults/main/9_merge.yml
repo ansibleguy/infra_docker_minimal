@@ -9,7 +9,7 @@ DOCKER_COMPOSE_DL: "https://github.com/docker/compose/releases/download/{{ _dock
 DOCKER_OPTS: "{% if DOCKER.nftables.clean | bool or DOCKER.nftables.bridge_none | bool %}\
 --bridge=none\
 {% else %}\
---bip={{ DOCKER.network }}
+--default-address-pool='{{ DOCKER.address_pool }}'
 {% endif %}\
 {% if DOCKER.nftables.clean | bool or DOCKER.nftables.disable_iptables | bool %}\
  --iptables=false\

@@ -21,4 +21,4 @@ defaults_docker:
     bridge_none: false  # set bridge=none argument on docker-startup
     disable_iptables: false  # set iptables=false argument on docker-startup
     reload: false  # reload nftables after a docker.service restart to remove its auto-added iptables-rules
-  network: '172.18.0.0/16'
+  address_pool: 'base=172.18.0.0/16,size=24'
