@@ -16,6 +16,7 @@
 - name: Docker-Minimal | Adding repo public-key
   ansible.builtin.shell: "gpg --dearmor <  {{ DOCKER_HC.repo.gpg.file }}_armored > {{ DOCKER_HC.repo.gpg.file }}"
   no_log: true
+  changed_when: false
   when: dok_gpg_dl.changed
 
 - name: Docker-Minimal | Add docker repository
