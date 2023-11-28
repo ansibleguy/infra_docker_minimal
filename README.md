@@ -13,6 +13,10 @@ Ansible Role to deploy a basic docker installation on a linux server.
 ## Install
 
 ```bash
+# latest
+ansible-galaxy role install git+https://github.com/ansibleguy/infra_docker_minimal
+
+# from galaxy
 ansible-galaxy install ansibleguy.infra_docker_minimal
 
 # or to custom role-path
