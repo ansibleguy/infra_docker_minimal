@@ -58,6 +58,8 @@ There is also an option to install docker-compose on the target host.
 
 ## Usage
 
+You want a simple Ansible GUI? Check-out my [Ansible WebUI](https://github.com/ansibleguy/webui)
+
 ### Config
 
 You can configure docker using the 'docker' variable/dictionary.
