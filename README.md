@@ -2,11 +2,17 @@
 
 Ansible Role to deploy a basic docker installation on a linux server.
 
-[![Molecule Test Status](https://badges.ansibleguy.net/infra_docker_minimal.molecule.svg)](https://github.com/ansibleguy/_meta_cicd/blob/latest/templates/usr/local/bin/cicd/molecule.sh.j2)
-[![YamlLint Test Status](https://badges.ansibleguy.net/infra_docker_minimal.yamllint.svg)](https://github.com/ansibleguy/_meta_cicd/blob/latest/templates/usr/local/bin/cicd/yamllint.sh.j2)
-[![PyLint Test Status](https://badges.ansibleguy.net/infra_docker_minimal.pylint.svg)](https://github.com/ansibleguy/_meta_cicd/blob/latest/templates/usr/local/bin/cicd/pylint.sh.j2)
-[![Ansible-Lint Test Status](https://badges.ansibleguy.net/infra_docker_minimal.ansiblelint.svg)](https://github.com/ansibleguy/_meta_cicd/blob/latest/templates/usr/local/bin/cicd/ansiblelint.sh.j2)
+[![Lint](https://github.com/ansibleguy/infra_docker_minimal/actions/workflows/lint.yml/badge.svg)](https://github.com/ansibleguy/infra_docker_minimal/actions/workflows/lint.yml)
 [![Ansible Galaxy](https://badges.ansibleguy.net/galaxy.badge.svg)](https://galaxy.ansible.com/ui/standalone/roles/ansibleguy/infra_docker_minimal)
+
+**Molecule Integration-Tests**:
+
+* Status: [![Molecule Test Status](https://badges.ansibleguy.net/infra_docker_minimal.molecule.svg)](https://github.com/ansibleguy/_meta_cicd/blob/latest/templates/usr/local/bin/cicd/molecule.sh.j2) |
+[![Functional-Tests](https://github.com/ansibleguy/infra_docker_minimal/actions/workflows/integration_test_result.yml/badge.svg)](https://github.com/ansibleguy/infra_docker_minimal/actions/workflows/integration_test_result.yml)
+* Logs: [API](https://ci.ansibleguy.net/api/job/ansible-test-molecule-infra_docker_minimal/logs?token=2b7bba30-9a37-4b57-be8a-99e23016ce70&lines=1000) | [Short](https://badges.ansibleguy.net/log/molecule_infra_docker_minimal_test_short.log) | [Full](https://badges.ansibleguy.net/log/molecule_infra_docker_minimal_test.log)
+
+Internal CI: [Tester Role](https://github.com/ansibleguy/_meta_cicd) | [Jobs API](https://github.com/O-X-L/github-self-hosted-jobs-systemd)
+
 
 **Tested:**
 * Debian 11
