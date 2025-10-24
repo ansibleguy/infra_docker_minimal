@@ -27,3 +27,5 @@ DOCKER_OPTS: "{% if DOCKER.nftables.clean | bool or DOCKER.nftables.bridge_none 
 DOCKER_SVC_CMD: "/usr/bin/dockerd {{ DOCKER_OPTS }}\
 {% if DOCKER.tcp.enable | bool %} -H tcp://{{ DOCKER.tcp.bind }}:{{ DOCKER.tcp.port }} --cgroup-parent 'docker.slice'{% endif %}
 -H unix://{{ DOCKER.socket }}"
+
+DOCKER_PROXY_EXCLUDES: "{% for e in DOCKER.proxy_excludes | ensure_list %}{% if e|default(none, true) is not none %}{{ e }}{% if not loop.last %},{% endif %}{% endif %}{% endfor %}"

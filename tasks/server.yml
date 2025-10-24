@@ -10,6 +10,25 @@
   ansible.builtin.file:
     path: '/etc/docker/daemon.json'
     state: absent
+  when:
+    - DOCKER.daemon_config | default(none, true) is none
+    - DOCKER.proxy_url | default(none, true) is none
+
+- name: Docker-Minimal | Server | Set proxies in daemon.json
+  ansible.builtin.copy:
+    dest: '/etc/docker/daemon.json'
+    content: |
+      {
+        "proxies": {
+          "http-proxy": "{{ DOCKER.proxy_url }}",
+          "https-proxy": "{{ DOCKER.proxy_url }}",
+          "no-proxy": "{{ DOCKER_PROXY_EXCLUDES }}"
+        }
+      }
+    mode: 0644
+  when:
+    - DOCKER.daemon_config | default(none, true) is none
+    - DOCKER.proxy_url | default(none, true) is not none
 
 - name: Docker-Minimal | Server | Configuring docker service (1/2)
   ansible.builtin.file:
