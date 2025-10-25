@@ -32,5 +32,5 @@ defaults_docker:
     ca:
     verify_client: false
   daemon_config:  # supply JSON string to write into /etc/docker/daemon.json
-  proxy_url:  # p.e. http://proxy.ansibleguy.net:3128; only supported if 'daemon_config' is unset
+  proxy_url:  # p.e. http://proxy.template.oxl.at:3128; only supported if 'daemon_config' is unset
   proxy_excludes: ['127.0.0.1', '::1', 'localhost']

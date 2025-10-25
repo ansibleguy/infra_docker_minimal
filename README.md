@@ -2,16 +2,16 @@
 
 Ansible Role to deploy a basic docker installation on a linux server.
 
-[![Lint](https://github.com/ansibleguy/infra_docker_minimal/actions/workflows/lint.yml/badge.svg)](https://github.com/ansibleguy/infra_docker_minimal/actions/workflows/lint.yml)
-[![Ansible Galaxy](https://badges.ansibleguy.net/galaxy.badge.svg)](https://galaxy.ansible.com/ui/standalone/roles/ansibleguy/infra_docker_minimal)
+[![Lint](https://github.com/O-X-L/ansible-role-docker-minimal/actions/workflows/lint.yml/badge.svg)](https://github.com/O-X-L/ansible-role-docker-minimal/actions/workflows/lint.yml)
+[![Ansible Galaxy](https://badges.oss.oxl.app/galaxy.badge.svg)](https://galaxy.ansible.com/ui/standalone/roles/oxlorg/docker_minimal)
 
 **Molecule Integration-Tests**:
 
-* Status: [![Molecule Test Status](https://badges.ansibleguy.net/infra_docker_minimal.molecule.svg)](https://github.com/ansibleguy/_meta_cicd/blob/latest/templates/usr/local/bin/cicd/molecule.sh.j2) |
-[![Functional-Tests](https://github.com/ansibleguy/infra_docker_minimal/actions/workflows/integration_test_result.yml/badge.svg)](https://github.com/ansibleguy/infra_docker_minimal/actions/workflows/integration_test_result.yml)
-* Logs: [API](https://ci.ansibleguy.net/api/job/ansible-test-molecule-infra_docker_minimal/logs?token=2b7bba30-9a37-4b57-be8a-99e23016ce70&lines=1000) | [Short](https://badges.ansibleguy.net/log/molecule_infra_docker_minimal_test_short.log) | [Full](https://badges.ansibleguy.net/log/molecule_infra_docker_minimal_test.log)
+* Status: [![Molecule Test Status](https://badges.oss.oxl.app/infra_docker_minimal.molecule.svg)](https://github.com/O-X-L/ansible-role-oxl-cicd/blob/latest/templates/usr/local/bin/cicd/molecule.sh.j2) |
+[![Functional-Tests](https://github.com/O-X-L/ansible-role-docker-minimal/actions/workflows/integration_test_result.yml/badge.svg)](https://github.com/O-X-L/ansible-role-docker-minimal/actions/workflows/integration_test_result.yml)
+* Logs: [API](https://ci.oss.oxl.app/api/job/ansible-test-molecule-infra_docker_minimal/logs?token=2b7bba30-9a37-4b57-be8a-99e23016ce70&lines=1000) | [Short](https://badges.oss.oxl.app/log/molecule_infra_docker_minimal_test_short.log) | [Full](https://badges.oss.oxl.app/log/molecule_infra_docker_minimal_test.log)
 
-Internal CI: [Tester Role](https://github.com/ansibleguy/_meta_cicd) | [Jobs API](https://github.com/O-X-L/github-self-hosted-jobs-systemd)
+Internal CI: [Tester Role](https://github.com/O-X-L/ansible-role-oxl-cicd) | [Jobs API](https://github.com/O-X-L/github-self-hosted-jobs-systemd)
 
 
 **Tested:**
@@ -24,13 +24,13 @@ Internal CI: [Tester Role](https://github.com/ansibleguy/_meta_cicd) | [Jobs API
 
 ```bash
 # latest
-ansible-galaxy role install git+https://github.com/ansibleguy/infra_docker_minimal
+ansible-galaxy role install git+https://github.com/O-X-L/ansible-role-docker-minimal
 
 # from galaxy
-ansible-galaxy install ansibleguy.infra_docker_minimal
+ansible-galaxy install oxlorg.docker_minimal
 
 # or to custom role-path
-ansible-galaxy install ansibleguy.infra_docker_minimal --roles-path ./roles
+ansible-galaxy install oxlorg.docker_minimal --roles-path ./roles
 ```
 
 ----
@@ -107,4 +107,4 @@ There is also an option to install docker-compose on the target host.
 
   This Ansible role lets you configure this behaviour as can be seen in the example below!
 
-  If you use NFTables you might also want to look into the [ansibleguy.infra_nftables](https://github.com/ansibleguy/infra_nftables) role!
+  If you use NFTables you might also want to look into the [oxlorg.nftables](https://github.com/O-X-L/ansible-role-nftables) role!

@@ -42,7 +42,7 @@
   ansible.builtin.copy:
     content: |
       # ansible_managed
-      # ansibleguy.infra_docker_minimal
+      # oxlorg.docker_minimal
 
       [Service]
       ExecStart=
